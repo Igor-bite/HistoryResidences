@@ -58,12 +58,34 @@ class ViewController: UIViewController {
 	
 	@objc
 	func openMap() {
+		guard let _ = getApiToken() else {
+			let ac = UIAlertController(title: "Can't find token", message: nil, preferredStyle: .alert)
+			ac.addAction(UIAlertAction(title: "OK", style: .cancel))
+			self.present(ac, animated: true)
+			return
+		}
 		let mapVC = MapViewController()
 		mapVC.residences = residences
 		mapVC.delegate = self
 		let nav = UINavigationController(rootViewController: mapVC)
 		nav.modalPresentationStyle = .fullScreen
 		self.present(nav, animated: true)
+	}
+	
+	private func getApiToken() -> String? {
+		var resourceFileDictionary: NSDictionary?
+			
+		if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
+			resourceFileDictionary = NSDictionary(contentsOfFile: path)
+		}
+		
+		if let resourceFileDictionaryContent = resourceFileDictionary {
+			let token = resourceFileDictionaryContent.object(forKey: "YandexMapsToken") as? String
+			if token == "" {
+				return nil
+			}
+			return token
+		} else { return nil }
 	}
 	
 	@objc

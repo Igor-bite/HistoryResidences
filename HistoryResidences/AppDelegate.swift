@@ -39,7 +39,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		}
 		
 		if let resourceFileDictionaryContent = resourceFileDictionary {
-			return resourceFileDictionaryContent.object(forKey: "YandexMapsToken") as? String
+			let token = resourceFileDictionaryContent.object(forKey: "YandexMapsToken") as? String
+			if token == "" {
+				return nil
+			}
+			return token
 		} else { return nil }
 	}
 }
