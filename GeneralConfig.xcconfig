@@ -1,0 +1,11 @@
+//
+//  GeneralConfig.xcconfig
+//  HistoryResidences
+//
+//  Created by Игорь Клюжев on 03.12.2021.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+#include "Pods/Target Support Files/Pods-HistoryResidences/Pods-HistoryResidences.debug.xcconfig"
+#include? "SecureConfig.xcconfig"

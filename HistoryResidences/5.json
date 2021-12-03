@@ -1,0 +1,18 @@
+{
+	"name": "Домик Петра в Таллине",
+	"images": [
+		"https://media-cdn.tripadvisor.com/media/photo-s/0e/35/bb/d0/i.jpg",
+		"https://i.ytimg.com/vi/qF631dKE3bs/sddefault.jpg",
+		"https://upload.wikimedia.org/wikipedia/commons/8/82/PHTLivingRoom1.jpg",
+		"https://upload.wikimedia.org/wikipedia/commons/3/30/PHTLivingRoom2.jpg",
+		"https://upload.wikimedia.org/wikipedia/commons/6/6a/PHTBedroom.jpg",
+		"https://upload.wikimedia.org/wikipedia/commons/e/e2/PHTKitchen.jpg",
+		"https://upload.wikimedia.org/wikipedia/commons/4/45/PHTDiningRoom.jpg"
+	],
+	"description": "Дом-музей Петра I расположен в парке Кадриорг в Таллине. Музей открыт в здании, где русский царь Пётр I останавливался 11 раз во время Северной войны со Швецией. Дом постройки XVII века принадлежал ратману Герману фон Дрентельну. Впервые Пётр приехал сюда в 1714 году, а в 1715 году выкупил дом за 1400 рублей у вдовы прежнего хозяина. Музей открыт в 1806 году по распоряжению российского императора Александра I, посетившего эти места в 1804 году. С 1941 года дом-музей — филиал Таллинского городского музея.",
+	"coordinates": {
+		"latitude": 59.437615,
+		"longitude": 24.796250
+	},
+	"address": "Mäekalda 2, Tallinn, Эстония"
+}

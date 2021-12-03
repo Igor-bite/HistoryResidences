@@ -1,0 +1,15 @@
+{
+	"name": "Домик Петра в Заандаме",
+	"images": [
+		"https://upload.wikimedia.org/wikipedia/commons/2/20/Tsaar_Peterhuisje_by_Niels_Kim.jpg?uselang=ru",
+		"https://avatars.mds.yandex.net/get-images-cbir/2493077/2hg81Zapw1nFGLWUFXUWbQ9928/ocr",
+		"https://about-planet.ru/images/evropa/arxitektura/domik_petra_pervova/domik-petra-pervogo-zaandam.jpg",
+		"https://panoramaamsterdama.com/wp-content/uploads/2019/04/zdes-rodilas-velikaja-rossija.jpg"
+	],
+	"description": "В 1697 году Петр I отправился в Европу искать союзников для борьбы с Османской империей. В Голландии он останавливался на недельку в городке Заандам в небольшом доме, который местные жители сохранили до наших дней. Сегодня это едва ли не главный музей Заандама, а в самом городе куча русских названий. За 300 лет домик Петра обзавелся на только каменным футляром, но и множеством былей и небылиц. Например, говорят, что в разное время здесь побывали Наполеон и Кутузов. Домик находится на улице Кримп - это историческое название. Так она называлась и тогда, когда на ней недолго время обитал Петр I.",
+	"coordinates": {
+		"latitude": 52.437500,
+		"longitude": 4.822780
+	},
+	"address": "Krimp, 18, г. Заандам, Нидерланды"
+}
