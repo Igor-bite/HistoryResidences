@@ -18,7 +18,8 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
 	private let locationView = UIView()
 	
 	private static let partForImage = 3.0
-	let scrollView = UIScrollView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / DetailsViewController.partForImage))
+	let scrollView = UIScrollView()
+	let imagesScrollView = UIScrollView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.height / DetailsViewController.partForImage))
 	var frame: CGRect = CGRect(x: 0, y: 0, width: 0, height: 0)
 	var pageControl : UIPageControl = UIPageControl()
 	
@@ -61,14 +62,14 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
 			make.height.equalTo(70)
 		}
 		
-		scrollView.delegate = self
-		scrollView.isPagingEnabled = true
-		scrollView.showsHorizontalScrollIndicator = false
-		scrollView.showsVerticalScrollIndicator = false
+		imagesScrollView.delegate = self
+		imagesScrollView.isPagingEnabled = true
+		imagesScrollView.showsHorizontalScrollIndicator = false
+		imagesScrollView.showsVerticalScrollIndicator = false
 
-		self.view.addSubview(scrollView)
+		self.view.addSubview(imagesScrollView)
 		
-		scrollView.snp.makeConstraints { make in
+		imagesScrollView.snp.makeConstraints { make in
 			make.top.lessThanOrEqualTo(residenceTitle.snp.bottom)
 			make.centerX.equalTo(view.snp.centerX)
 			make.height.equalTo(view.snp.height).dividedBy(Self.partForImage)
@@ -77,18 +78,18 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
 		
 		let gap = 10.0
 		for index in 0..<(residence?.images.count ?? 0) {
-			frame.origin.x = gap + (self.scrollView.frame.size.width) * CGFloat(index)
-			frame.size = CGSize(width: self.scrollView.frame.width - 2 * gap, height: self.scrollView.frame.height)
+			frame.origin.x = gap + (self.imagesScrollView.frame.size.width) * CGFloat(index)
+			frame.size = CGSize(width: self.imagesScrollView.frame.width - 2 * gap, height: self.imagesScrollView.frame.height)
 
 			let imageView = UIImageView(frame: frame)
 			imageView.image = residence?.images[index]
 			imageView.contentMode = .scaleAspectFill
 			imageView.layer.cornerRadius = 20
 			imageView.clipsToBounds = true
-			self.scrollView.addSubview(imageView)
+			self.imagesScrollView.addSubview(imageView)
 		}
 		
-		self.scrollView.contentSize = CGSize(width: self.scrollView.frame.size.width * CGFloat((residence?.images.count ?? 0)), height: self.scrollView.frame.size.height)
+		self.imagesScrollView.contentSize = CGSize(width: self.imagesScrollView.frame.size.width * CGFloat((residence?.images.count ?? 0)), height: self.imagesScrollView.frame.size.height)
 		pageControl.addTarget(self, action: #selector(changePage(sender:)), for: .valueChanged)
 
 		configurePageControl()
@@ -145,11 +146,13 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
 			self.present(ac, animated: true)
 			return
 		}
-		let mapVC = MapViewController()
-		mapVC.residences = residences
-		mapVC.residenceToShow = residence
-		mapVC.modalPresentationStyle = .fullScreen
-		self.present(mapVC, animated: true)
+		guard let residence = residence else {
+			return
+		}
+
+		let ymUrl = "yandexmaps://maps.yandex.ru/?pt=\(residence.coordinates.longitude),\(residence.coordinates.latitude)"
+		guard let url = URL(string: ymUrl) else { return }
+		UIApplication.shared.open(url)
 	}
 	
 	private func getApiToken() -> String? {
@@ -181,17 +184,17 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
 		self.pageControl.currentPageIndicatorTintColor = UIColor(named: "AccentColor")
 		self.view.addSubview(pageControl)
 		pageControl.snp.makeConstraints { make in
-			make.top.equalTo(scrollView.snp.bottom)
-			make.left.equalTo(scrollView.snp.left)
-			make.right.equalTo(scrollView.snp.right)
+			make.top.equalTo(imagesScrollView.snp.bottom)
+			make.left.equalTo(imagesScrollView.snp.left)
+			make.right.equalTo(imagesScrollView.snp.right)
 			make.height.equalTo(50)
 		}
 	}
 
 	@objc
 	func changePage(sender: AnyObject) -> () {
-		let x = CGFloat(pageControl.currentPage) * scrollView.frame.size.width
-		scrollView.setContentOffset(CGPoint(x:x, y:0), animated: true)
+		let x = CGFloat(pageControl.currentPage) * imagesScrollView.frame.size.width
+		imagesScrollView.setContentOffset(CGPoint(x:x, y:0), animated: true)
 	}
 
 	func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
