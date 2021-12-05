@@ -12,6 +12,8 @@ import CoreLocation
 
 protocol ResidencesListDelegate {
 	func likeResidence(at row: Int)
+	
+	func openMapForResidence(at row: Int)
 }
 
 final class MyCustomCell: UITableViewCell, Reusable {
@@ -81,6 +83,8 @@ final class MyCustomCell: UITableViewCell, Reusable {
 		likeImage.contentMode = .scaleAspectFill
 		
 		myBackground.addSubview(distanceLabelView)
+		distanceLabelView.isUserInteractionEnabled = true
+		distanceLabelView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showOnMap)))
 		
 		distanceLabelView.snp.makeConstraints { make in
 			make.bottom.equalTo(myBackground.snp.bottom).offset(-6)
@@ -111,5 +115,10 @@ final class MyCustomCell: UITableViewCell, Reusable {
 	@objc
 	func addToLiked() {
 		delegate?.likeResidence(at: rowIndex!)
+	}
+	
+	@objc
+	func showOnMap() {
+		delegate?.openMapForResidence(at: rowIndex!)
 	}
 }

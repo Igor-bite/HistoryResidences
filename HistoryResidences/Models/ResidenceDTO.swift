@@ -57,6 +57,7 @@ class Residence {
 		self.address = dto.address
 		self.coordinates = dto.coordinates
 		self.delegate = delegate
+		restoreLike()
 		self.dispatchImagesLoad(links: dto.images, indexPathToUpdate: indexPathToUpdate)
 	}
 	
@@ -77,5 +78,18 @@ class Residence {
 				}
 			}
 		}
+	}
+	
+	private func restoreLike() {
+		let manager = UserDefaults.standard
+		self.isLiked = manager.bool(forKey: name)
+	}
+	
+	func isEqual(_ other: Residence) -> Bool {
+		if name == other.name &&
+			address == other.address {
+			return true
+		}
+		return false
 	}
 }

@@ -15,6 +15,7 @@ class MapViewController: UIViewController {
 	var residences : [Residence]?
 	private let backButton = UILabel()
 	private let goBackButton = UIImageView()
+	private let backView = UIView()
 	weak var delegate: ViewController?
 	
 	var residenceToShow: Residence?
@@ -24,18 +25,25 @@ class MapViewController: UIViewController {
 		
 		mapView.frame = view.frame
 		view.addSubview(mapView)
-		
+		navigationController?.navigationBar.isHidden = true
 		goBackButton.image = UIImage(systemName: "chevron.backward.circle")
-		view.addSubview(goBackButton)
+		view.addSubview(backView)
+		backView.layer.cornerRadius = 25
+		backView.addSubview(goBackButton)
 
-		let backGR = UITapGestureRecognizer(target: self, action: #selector(goBack))
-		goBackButton.isUserInteractionEnabled = true
-		goBackButton.addGestureRecognizer(backGR)
-
-		goBackButton.snp.makeConstraints { make in
+		backView.isUserInteractionEnabled = true
+		goBackButton.isUserInteractionEnabled = false
+		backView.backgroundColor = UIColor(white: 0, alpha: 0.1)
+		backView.snp.makeConstraints { make in
 			make.top.equalTo(self.view.snp.top).offset(50)
 			make.left.equalTo(view.snp.left).offset(15)
-			make.height.width.equalTo(40)
+			make.height.width.equalTo(50)
+		}
+		
+		backView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goBack)))
+		
+		goBackButton.snp.makeConstraints { make in
+			make.edges.equalTo(backView)
 		}
 		
 		let mapObjects = mapView.mapWindow.map.mapObjects
@@ -56,6 +64,8 @@ class MapViewController: UIViewController {
 	@objc
 	func goBack() {
 		self.dismiss(animated: true)
+		print("Go back")
+//		delegate?.dismissMap(self)
 	}
 	
 	func addResidences() {
@@ -100,7 +110,5 @@ extension MapViewController: YMKMapObjectTapListener {
 		detailsVC.residence = residence
 		detailsVC.residences = self.residences
 		self.navigationController?.pushViewController(detailsVC, animated: true)
-//		delegate?.vcToDismiss = self
-//		delegate?.push(vc: detailsVC)
 	}
 }

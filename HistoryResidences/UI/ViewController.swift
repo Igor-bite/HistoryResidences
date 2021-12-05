@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import CoreLocation
+import Alamofire
 
 class ViewController: UIViewController, CLLocationManagerDelegate, ResidencesListDelegate {
 	private var tableView: UITableView?
@@ -18,6 +19,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ResidencesLis
 			tableView?.reloadData()
 		}
 	}
+	
+	private var allResidences = [Residence]()
+	private var isLikedOnly = false
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -27,7 +31,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ResidencesLis
 		navigationController?.navigationBar.backgroundColor = .white
 		
 		navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "map.fill")?.withTintColor(.orange), style: .plain, target: self, action: #selector(openMap))
-		navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart.fill")?.withTintColor(.orange), style: .plain, target: self, action: #selector(openUserProfile))
+		navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart.fill")?.withTintColor(.orange), style: .plain, target: self, action: #selector(showLikedOnly))
 		
 		view.backgroundColor = .white
 		setUpTableView()
@@ -47,6 +51,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ResidencesLis
 		let newLon = locValue.longitude
 		guard let previousLocation = previousLocation else {
 			self.previousLocation = locValue
+			sortResidencesByDistance()
 			return
 		}
 
@@ -73,13 +78,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ResidencesLis
 		label.backgroundColor = .white
 		tableView.tableHeaderView = label
 		view.addSubview(tableView)
-		
-//		tableView.snp.makeConstraints { make in
-//			make.top.equalTo(self.view.snp.top)
-//			make.right.equalTo(self.view.snp.right)
-//			make.left.equalTo(self.view.snp.left)
-//			make.bottom.equalTo(self.view.snp.bottom)
-//		}
 	}
 	
 	public weak var vcToDismiss: UIViewController?
@@ -117,17 +115,68 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ResidencesLis
 	}
 	
 	@objc
-	func openUserProfile() {
-		let vc = ProfileViewController()
-		present(vc, animated: true)
+	func showLikedOnly() {
+		var noChanges = false
+		if isLikedOnly {
+			residences = allResidences
+			title = "Резиденции"
+		} else {
+			residences = allResidences.filter({ residence in
+				return residence.isLiked
+			})
+			if residences.isEmpty {
+				residences = allResidences
+				let ac = UIAlertController(title: "У вас пока нет избранных резиденций", message: "Резиденцию можно добавить в избранное нажав на сердечко", preferredStyle: .alert)
+				ac.addAction(UIAlertAction(title: "Ясно", style: .cancel))
+				self.present(ac, animated: true)
+				noChanges = true
+			} else {
+				title = "Избранное"
+			}
+		}
+		if !noChanges {
+			isLikedOnly.toggle()
+			tableView?.reloadData()
+			self.tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+		}
 	}
 	
 	private func getResidences() {
 		for file in 1...30 {
 			if let res = parseJsonFile(filename: String(file)) {
-				residences.append(Residence(dto: res, delegate: self.tableView, indexPathToUpdate: IndexPath(row: file - 1, section: 0)))
+				let residence = Residence(dto: res, delegate: self.tableView, indexPathToUpdate: IndexPath(row: file - 1, section: 0))
+				allResidences.append(residence)
 			}
 		}
+		if let location = self.previousLocation {
+			let loc = CLLocation(latitude: location.latitude, longitude: location.longitude)
+			allResidences.sort { res1, res2 in
+				let dist1: Double = loc.distance(from: CLLocation(latitude: res1.coordinates.latitude, longitude: res1.coordinates.longitude))
+				let dist2: Double = loc.distance(from: CLLocation(latitude: res2.coordinates.latitude, longitude: res2.coordinates.longitude))
+					
+				return dist1 < dist2
+			}
+		}
+		residences = allResidences
+	}
+	
+	func sortResidencesByDistance() {
+		if let location = self.previousLocation {
+			let loc = CLLocation(latitude: location.latitude, longitude: location.longitude)
+			residences.sort { res1, res2 in
+				let dist1: Double = loc.distance(from: CLLocation(latitude: res1.coordinates.latitude, longitude: res1.coordinates.longitude))
+				let dist2: Double = loc.distance(from: CLLocation(latitude: res2.coordinates.latitude, longitude: res2.coordinates.longitude))
+					
+				return dist1 < dist2
+			}
+			allResidences.sort { res1, res2 in
+				let dist1: Double = loc.distance(from: CLLocation(latitude: res1.coordinates.latitude, longitude: res1.coordinates.longitude))
+				let dist2: Double = loc.distance(from: CLLocation(latitude: res2.coordinates.latitude, longitude: res2.coordinates.longitude))
+					
+				return dist1 < dist2
+			}
+		}
+		tableView?.reloadData()
 	}
 	
 	private func parseJsonFile(filename: String) -> ResidenceDTO? {
@@ -150,7 +199,44 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ResidencesLis
 	
 	func likeResidence(at row: Int) {
 		self.residences[row].isLiked.toggle()
-		self.tableView?.reloadRows(at: [IndexPath(row: row, section: 0)], with: .fade)
+		let manager = UserDefaults.standard
+		manager.set(self.residences[row].isLiked, forKey: self.residences[row].name)
+		let res = allResidences.first { residence in
+			return residence.isEqual(self.residences[row])
+		}
+		res?.isLiked = self.residences[row].isLiked
+		if isLikedOnly {
+			residences = residences.filter({ residence in
+				return residence.isLiked
+			})
+			if residences.isEmpty {
+				residences = allResidences
+				title = "Резиденции"
+				isLikedOnly = false
+				let ac = UIAlertController(title: "Теперь у вас нет избранных резиденций", message: nil, preferredStyle: .alert)
+				ac.addAction(UIAlertAction(title: "Ясно", style: .cancel))
+				self.present(ac, animated: true)
+			}
+			self.tableView?.reloadData()
+		} else {
+			self.tableView?.reloadRows(at: [IndexPath(row: row, section: 0)], with: .fade)
+		}
+	}
+	
+	func openMapForResidence(at row: Int) {
+		guard let _ = getApiToken() else {
+			let ac = UIAlertController(title: "Can't find token", message: nil, preferredStyle: .alert)
+			ac.addAction(UIAlertAction(title: "OK", style: .cancel))
+			self.present(ac, animated: true)
+			return
+		}
+		let mapVC = MapViewController()
+		mapVC.residences = residences
+		mapVC.residenceToShow = residences[row]
+		mapVC.delegate = self
+		let nav = UINavigationController(rootViewController: mapVC)
+		nav.modalPresentationStyle = .fullScreen
+		self.present(nav, animated: true)
 	}
 }
 
