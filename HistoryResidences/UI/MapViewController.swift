@@ -64,8 +64,6 @@ class MapViewController: UIViewController {
 	@objc
 	func goBack() {
 		self.dismiss(animated: true)
-		print("Go back")
-//		delegate?.dismissMap(self)
 	}
 	
 	func addResidences() {
@@ -88,8 +86,8 @@ extension MapViewController: YMKMapObjectTapListener {
 		let popupVC = ALPopup.card(template: .init(title: "Резиденция" ,
 												subtitle: residence?.name,
 												image: residence?.images[0],
-												privaryButtonTitle: "Open",
-												secondaryButtonTitle: "Not Now"))
+												privaryButtonTitle: "Показать детали",
+												secondaryButtonTitle: "Построить маршрут"))
 
 		popupVC.tempateView.primaryButtonAction = { [weak self] in
 			popupVC.pop { [weak self] in
@@ -98,7 +96,12 @@ extension MapViewController: YMKMapObjectTapListener {
 		}
 		
 		popupVC.tempateView.secondaryButtonAction = {
-			popupVC.pop()
+			guard let residence = residence else {
+				return
+			}
+			let ymUrl = "yandexmaps://maps.yandex.ru/?pt=\(residence.coordinates.longitude),\(residence.coordinates.latitude)"
+			guard let url = URL(string: ymUrl) else { return }
+			UIApplication.shared.open(url)
 		}
 		
 		popupVC.push(from: self)
