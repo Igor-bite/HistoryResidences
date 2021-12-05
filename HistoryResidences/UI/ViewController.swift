@@ -7,10 +7,17 @@
 
 import UIKit
 import SnapKit
+import CoreLocation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CLLocationManagerDelegate, ResidencesListDelegate {
 	private var tableView: UITableView?
 	private var residences = [Residence]()
+	private let locationManager = CLLocationManager()
+	private var previousLocation: CLLocationCoordinate2D? = nil {
+		didSet {
+			tableView?.reloadData()
+		}
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -20,11 +27,32 @@ class ViewController: UIViewController {
 		navigationController?.navigationBar.backgroundColor = .white
 		
 		navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "map.fill")?.withTintColor(.orange), style: .plain, target: self, action: #selector(openMap))
-		navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.fill")?.withTintColor(.orange), style: .plain, target: self, action: #selector(openUserProfile))
+		navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart.fill")?.withTintColor(.orange), style: .plain, target: self, action: #selector(openUserProfile))
 		
 		view.backgroundColor = .white
 		setUpTableView()
 		getResidences()
+		
+		locationManager.requestWhenInUseAuthorization()
+		if CLLocationManager.locationServicesEnabled() {
+			locationManager.delegate = self
+			locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+			locationManager.startUpdatingLocation()
+		}
+	}
+	
+	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+		guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+		let newLat = locValue.latitude
+		let newLon = locValue.longitude
+		guard let previousLocation = previousLocation else {
+			self.previousLocation = locValue
+			return
+		}
+
+		if previousLocation.latitude - newLat > 0.0002 && previousLocation.longitude - newLon > 0.0002 {
+			self.previousLocation = locValue
+		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -119,13 +147,25 @@ class ViewController: UIViewController {
 			self.navigationController?.pushViewController(vc, animated: true)
 		})
 	}
+	
+	func likeResidence(at row: Int) {
+		self.residences[row].isLiked.toggle()
+		self.tableView?.reloadRows(at: [IndexPath(row: row, section: 0)], with: .fade)
+	}
 }
 
 extension ViewController : UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(for: indexPath, cellType: MyCustomCell.self)
 		let res = residences[indexPath.row]
-		cell.configure(residence: res)
+		cell.contentView.isUserInteractionEnabled = true
+		
+		if let location = previousLocation {
+			cell.configure(rowIndex: indexPath.row, residence: res, location: CLLocation(latitude: location.latitude, longitude: location.longitude), delegate: self)
+		} else {
+			cell.configure(rowIndex: indexPath.row, residence: res, delegate: self)
+		}
+		
 		return cell
 	}
 	

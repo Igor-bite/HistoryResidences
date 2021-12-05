@@ -48,6 +48,7 @@ class Residence {
 	var coordinates: Coordinates
 	var address: String
 	weak var delegate: UITableView?
+	var isLiked: Bool = false
 	
 	init(dto: ResidenceDTO, delegate: UITableView?, indexPathToUpdate: IndexPath) {
 		self.name = dto.name

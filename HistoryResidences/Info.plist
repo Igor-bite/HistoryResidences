@@ -4,6 +4,8 @@
 <dict>
 	<key>YandexMapsToken</key>
 	<string>$(YANDEX_MAPS_TOKEN)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need to get your location for full functionality</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
