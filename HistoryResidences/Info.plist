@@ -6,6 +6,11 @@
 	<string>$(YANDEX_MAPS_TOKEN)</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need to get your location for full functionality</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

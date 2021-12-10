@@ -19,6 +19,13 @@
 		A58CEFFF271D7B04007E264E /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58CEFFE271D7B04007E264E /* DetailsViewController.swift */; };
 		A58CF001271D7B0F007E264E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58CF000271D7B0F007E264E /* MapViewController.swift */; };
 		A58CF003271D7B18007E264E /* MyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58CF002271D7B18007E264E /* MyCell.swift */; };
+		A59BF0132763E44D001AD531 /* 11.json in Resources */ = {isa = PBXBuildFile; fileRef = A59BF0122763E44D001AD531 /* 11.json */; };
+		A59BF0152763E462001AD531 /* 12.json in Resources */ = {isa = PBXBuildFile; fileRef = A59BF0142763E462001AD531 /* 12.json */; };
+		A59BF0172763E46A001AD531 /* 13.json in Resources */ = {isa = PBXBuildFile; fileRef = A59BF0162763E46A001AD531 /* 13.json */; };
+		A59BF0192763E474001AD531 /* 14.json in Resources */ = {isa = PBXBuildFile; fileRef = A59BF0182763E474001AD531 /* 14.json */; };
+		A59BF01B2763E47D001AD531 /* 15.json in Resources */ = {isa = PBXBuildFile; fileRef = A59BF01A2763E47D001AD531 /* 15.json */; };
+		A59BF01D2763E485001AD531 /* 16.json in Resources */ = {isa = PBXBuildFile; fileRef = A59BF01C2763E485001AD531 /* 16.json */; };
+		A59BF01F2763E490001AD531 /* 17.json in Resources */ = {isa = PBXBuildFile; fileRef = A59BF01E2763E490001AD531 /* 17.json */; };
 		A5A6C6282735D7AE001BA1A1 /* MyCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A6C6272735D7AE001BA1A1 /* MyCollectionView.swift */; };
 		A5AC6EDE2739C2E600F47686 /* 1.json in Resources */ = {isa = PBXBuildFile; fileRef = A5AC6EDD2739C2E600F47686 /* 1.json */; };
 		A5AC6EE02739C4F800F47686 /* 2.json in Resources */ = {isa = PBXBuildFile; fileRef = A5AC6EDF2739C4F800F47686 /* 2.json */; };
@@ -51,6 +58,13 @@
 		A58CEFFE271D7B04007E264E /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		A58CF000271D7B0F007E264E /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		A58CF002271D7B18007E264E /* MyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCell.swift; sourceTree = "<group>"; };
+		A59BF0122763E44D001AD531 /* 11.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 11.json; sourceTree = "<group>"; };
+		A59BF0142763E462001AD531 /* 12.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 12.json; sourceTree = "<group>"; };
+		A59BF0162763E46A001AD531 /* 13.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 13.json; sourceTree = "<group>"; };
+		A59BF0182763E474001AD531 /* 14.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 14.json; sourceTree = "<group>"; };
+		A59BF01A2763E47D001AD531 /* 15.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 15.json; sourceTree = "<group>"; };
+		A59BF01C2763E485001AD531 /* 16.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 16.json; sourceTree = "<group>"; };
+		A59BF01E2763E490001AD531 /* 17.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 17.json; sourceTree = "<group>"; };
 		A5A6C6272735D7AE001BA1A1 /* MyCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCollectionView.swift; sourceTree = "<group>"; };
 		A5AC6EDD2739C2E600F47686 /* 1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 1.json; sourceTree = "<group>"; };
 		A5AC6EDF2739C4F800F47686 /* 2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 2.json; sourceTree = "<group>"; };
@@ -130,6 +144,13 @@
 				A5AC6EEB2739CD8E00F47686 /* 8.json */,
 				A5AC6EED2739CD9A00F47686 /* 9.json */,
 				A5AC6EEF2739CDA800F47686 /* 10.json */,
+				A59BF0122763E44D001AD531 /* 11.json */,
+				A59BF0142763E462001AD531 /* 12.json */,
+				A59BF0162763E46A001AD531 /* 13.json */,
+				A59BF0182763E474001AD531 /* 14.json */,
+				A59BF01A2763E47D001AD531 /* 15.json */,
+				A59BF01C2763E485001AD531 /* 16.json */,
+				A59BF01E2763E490001AD531 /* 17.json */,
 			);
 			path = HistoryResidences;
 			sourceTree = "<group>";
@@ -232,12 +253,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A59BF0192763E474001AD531 /* 14.json in Resources */,
+				A59BF0132763E44D001AD531 /* 11.json in Resources */,
 				A5AC6EE82739C77000F47686 /* 6.json in Resources */,
+				A59BF0152763E462001AD531 /* 12.json in Resources */,
 				A5AC6EE02739C4F800F47686 /* 2.json in Resources */,
+				A59BF01B2763E47D001AD531 /* 15.json in Resources */,
+				A59BF01F2763E490001AD531 /* 17.json in Resources */,
 				A583D306271D791D00A9B97E /* LaunchScreen.storyboard in Resources */,
 				A5AC6EEE2739CD9A00F47686 /* 9.json in Resources */,
 				A5AC6EF02739CDA800F47686 /* 10.json in Resources */,
 				A5CB5FFC275A215C002F315C /* SecureConfig.xcconfig in Resources */,
+				A59BF01D2763E485001AD531 /* 16.json in Resources */,
+				A59BF0172763E46A001AD531 /* 13.json in Resources */,
 				A5AC6EE42739C75900F47686 /* 4.json in Resources */,
 				A5AC6EE62739C76400F47686 /* 5.json in Resources */,
 				A5AC6EEA2739CD7B00F47686 /* 7.json in Resources */,
